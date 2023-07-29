@@ -54,7 +54,7 @@ class TransformedDataset(torch.utils.data.Dataset):
 def get_transform(
     padding:int=40, # size after padding before cropping (unit: pixels)
     crop:int=32, # size after cropping (unit: pixels)
-    cutout:int=8, # size of cutout box (unit: pixels)
+    cutout:int=16, # size of cutout box (unit: pixels)
 ) -> dict[str, A.Compose]:
     """Create image transformation pipeline for training and test datasets.
     https://github.com/kuangliu/pytorch-cifar/blob/master/main.py#L30-L34
@@ -65,7 +65,7 @@ def get_transform(
             A.Normalize(mean=AVG, std=STD, always_apply=True), # Cutout boxes should be grey, not black
             A.PadIfNeeded(min_height=padding, min_width=padding, always_apply=True), # Pad before cropping to achieve translation
             A.RandomCrop(height=crop, width=crop, always_apply=True),
-            A.HorizontalFlip(),
+            # A.HorizontalFlip(),
             A.CoarseDropout( # Cutout
                 max_holes=1, max_height=cutout, max_width=cutout,
                 min_holes=1, min_height=cutout, min_width=cutout,
